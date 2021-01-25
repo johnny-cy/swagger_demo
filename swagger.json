@@ -1,0 +1,395 @@
+openapi: 3.0.1
+info:
+  title: API測試頁
+  description: '83項域名監測功能所用之APIs'
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+# servers:
+# - url: http://10.80.1.20:9000/app4/v1/PJ83BN/dtr/api/
+#   description: 83項專案主機(DEV)
+# - url: http://10.80.1.15:30011/app5/api/
+#   description: 資料庫主機(DEV)
+# - url: http://10.80.1.15:30021
+# - url: http://10.80.1.15:30031
+# - url: http://localhost:5566
+# - url: https://httpbin.org/
+tags:
+- name: 域名監測APIs
+  # description: 官網監測相關
+  externalDocs:
+    description: 需求規範
+    url: http://#
+- name: 資料庫APIs
+  externalDocs:
+    description: 需求規範
+    url: http://#
+paths:
+  /uploadDomainList2Sql_a:
+    servers:
+    - url: http://10.80.1.20:9000/app4/v1/PJ83BN/dtr/api/
+    post:
+      tags:
+      - 域名監測APIs
+      summary: 上傳代理資訊到資料庫
+      description: 上傳代理資訊到資料庫...
+      parameters:
+      - name: domaintype
+        in: query
+        required: true
+        schema:
+          type: string
+          default: 1
+      # operationId: updatePet
+      requestBody:
+        description: 上傳的資料表格式必須符合範例
+        content:
+          multipart/form-data: # Media type
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: 返回info頁面，帶上傳成功訊息
+          content: {}
+        400:
+          description: 返回info頁面，帶錯誤題示
+          content: {}
+  /uploadDomainList2Sql_b: 
+    servers:
+    - url: http://10.80.1.20:9000/app4/v1/PJ83BN/dtr/api/
+    post:
+      tags:
+      - 域名監測APIs
+      summary: 上傳最新獨立代理資訊到資料庫
+      description: 上傳最新獨立代理資訊到資料庫...
+      parameters:
+      - name: domaintype
+        in: query
+        required: true
+        schema:
+          type: string
+          default: 2
+      # operationId: updatePet
+      requestBody:
+        description: 上傳的資料表格式必須符合範例
+        content:
+          multipart/form-data: # Media type
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: 返回info頁面，帶上傳成功訊息
+          content: {}
+        400:
+          description: 返回info頁面，帶錯誤題示
+          content: {}  
+  /uploadDomainList2Sql_c: 
+    servers:
+    - url: http://10.80.1.20:9000/app4/v1/PJ83BN/dtr/api/
+    post:
+      tags:
+      - 域名監測APIs
+      summary: 上傳跳轉域名代理資訊到資料庫
+      description: 上傳跳轉域名代理資訊到資料庫...
+      parameters:
+      - name: domaintype
+        in: query
+        required: true
+        schema:
+          type: string
+          default: 3
+      # operationId: updatePet
+      requestBody:
+        description: 上傳的資料表格式必須符合範例
+        content:
+          multipart/form-data: # Media type
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: 返回info頁面，帶上傳成功訊息
+          content: {}
+        400:
+          description: 返回info頁面，帶錯誤題示
+          content: {}
+  /getDomainList:
+    servers:
+    - url: http://10.80.1.20:9000/app4/v1/PJ83BN/dtr/api/
+    get:
+      tags:
+      - 域名監測APIs
+      summary: 獲取當前代理資訊清單
+      parameters:
+      - name: range_start
+        description: 查找創建時間開始
+        in: query
+        required: true
+        schema:
+          type: string
+          default: "01/01/2021 00:00 AM"
+      - name: range_end
+        description: 查找創建時間結束
+        in: query
+        required: true
+        schema:
+          type: string
+          default: "01/01/2021 23:59 PM"
+      - name: get_type
+        description: 查找代理域名類型等於
+        in: query
+        schema:
+          type: string
+          enum:
+          - app
+          - inner
+          - outer
+          default: app
+      - name: domain_list_search
+        description: 查找代理域名包含文字
+        in: query
+        schema:
+          type: string
+      - name: code_to_match_search
+        description: 查找代理編號等於
+        in: query
+        schema:
+          type: string
+      - name: agent_id_search
+        description: 查找代理帳號等於
+        in: query
+        schema:
+          type: string
+      - name: domaintype
+        description: 查找域名功能類別號等於
+        in: query
+        schema:
+          type: string
+          default: "1"
+      responses:
+        200:
+          description: 回傳代理資訊清單
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        AgentID:
+                          type: string
+                        CodeToMatch:
+                          type: string
+                        DomainListAPP:
+                          type: string
+                        DomainListInner:
+                          type: string
+                        DomainListOuter:
+                          type: string
+                        CreatedTime:
+                          type: string
+                          fornat: date-time
+                        DomainType:
+                          type: string
+                        DomainList:
+                          type: string
+                        type:
+                          type: string
+
+
+  /mysql/r/:
+    servers:
+    - url: http://10.80.1.15:30011/app5/api/
+    get:
+      tags:
+      - 資料庫APIs
+      summary: 查詢資料
+      description: 
+      parameters:
+      - name: tablename
+        in: query
+        required: true
+        schema:
+          type: string
+          enum: 
+          - domainlistall
+          - domaintestlog
+        default: domainlistall
+        
+      - name: filter_data
+        in: query
+        required: true
+        schema:
+          type: object
+        style: deepObject # seems not working ?
+        default: {"DomainType": 1}
+      responses:
+        200:
+          # description: succ result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/read'
+              style: deepObject 
+  /mysql/c/:
+    servers:
+    - url: http://10.80.1.15:30011/app5/api/
+    post:
+      tags:
+      - 資料庫APIs
+      summary: 插入資料
+      description: 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tablename: 
+                  type: string
+                  default: domaintestlog
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      TestTime:
+                        type: string
+                        format: date-time
+                      AgentID:
+                        type: string
+                      Browser:
+                        type: string
+                        default: Chrome
+                      Through:
+                        type: string
+                        default: pc
+                      UrlIn:
+                        type: string
+                      UrlOut:
+                        type: string
+                      MyIP:
+                        type: string
+                      MyZone:
+                        type: string
+                      CDN:
+                        type: string
+                      PageLoadTime:
+                        type: integer
+                      Status:
+                        type: string
+                        default: 測試
+                      IPScreenshot:
+                        type: string
+                      ProductScreenshot1:
+                        type: string
+                      ProductScreenshot2:
+                        type: string
+                      ProductScreenshot3:
+                        type: string
+                      ProductScreenshot4:
+                        type: string
+                      DomainType:
+                        type: string
+        required: true
+           
+      responses:
+        200:
+          description: 回傳本次上傳的資料
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tablename: 
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        TestTime:
+                          type: string
+                          format: date-time
+                        AgentID:
+                          type: string
+                        Browser:
+                          type: string
+                        Through:
+                          type: string
+                        UrlIn:
+                          type: string
+                        UrlOut:
+                          type: string
+                        MyIP:
+                          type: string
+                        MyZone:
+                          type: string
+                        CDN:
+                          type: string
+                        PageLoadTime:
+                          type: integer
+                        Status:
+                          type: string
+                        IPScreenshot:
+                          type: string
+                        ProductScreenshot1:
+                          type: string
+                        ProductScreenshot2:
+                          type: string
+                        ProductScreenshot3:
+                          type: string
+                        ProductScreenshot4:
+                          type: string
+                        DomainType:
+                          type: string
+              
+    
+components:
+  schemas:
+    read:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              AgentID:
+                type: string
+              CodeToMatch:
+                type: string
+              DomainListAPP:
+                type: string
+              DomainListInner:
+                type: string
+              DomainListOuter:
+                type: string
+              CreatedTime:
+                type: string
+                format: date-time
+              DomainType:
+                type: string
+
